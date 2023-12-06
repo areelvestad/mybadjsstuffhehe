@@ -6618,7 +6618,7 @@ var feature2 = {
           "navn": "Olderdalen-Dalbakken-Báhkkavágg",
           "løype": "Løype 2",
           "status": "stengt",
-          "info": "Ingen info"
+          "info": ""
         }
       },
       {
@@ -7921,7 +7921,7 @@ var feature2 = {
           "navn": "Nordmannvikdalen",
           "løype": "Løype 1",
           "status": "stengt",
-          "info": "Ingen info"
+          "info": ""
         },
         "id": 1
       },
@@ -13241,7 +13241,7 @@ var feature2 = {
           "navn": "Trollvik-Trollvikdalen-Holmevannet-Birtavarre",
           "løype": "Løype 3",
           "status": "stengt",
-          "info": "Ingen info"
+          "info": ""
         }
       },
       {
@@ -26745,7 +26745,7 @@ var feature2 = {
           "navn": "Birtavarre-Gussagurra",
           "løype": "Løype 4a",
           "status": "stengt",
-          "info": "Ingen info"
+          "info": ""
         },
         "id": 3
       },
@@ -35654,7 +35654,7 @@ var feature2 = {
           "navn": "Gussagorra-Guolášjávri-Duolbajávri",
           "løype": "Løype 4b",
           "status": "stengt",
-          "info": "Ingen info"
+          "info": ""
         }
       },
       {
@@ -39988,7 +39988,7 @@ var feature2 = {
           "navn": "Gáiskriidi-Manndalen-Uhcávákkas-Duolbajávri",
           "løype": "Løype 5",
           "status": "stengt",
-          "info": "Ingen info"
+          "info": ""
         }
       },
       {
@@ -41232,7 +41232,7 @@ var feature2 = {
           "navn": "Goddejávri-«Solgropa»-Magervannet",
           "løype": "Løype 6",
           "status": "stengt",
-          "info": "Ingen info"
+          "info": ""
         }
       },
       {
@@ -41756,7 +41756,7 @@ var feature2 = {
           "navn": "Gussagurra-kommunegrense Nordreisa",
           "løype": "Løype 7",
           "status": "stengt",
-          "info": "Ingen info"
+          "info": ""
         }
       },
       {
@@ -41945,7 +41945,7 @@ var feature2 = {
           "navn": "Nommedalen-Holmevannet",
           "løype": "Løype 8",
           "status": "stengt",
-          "info": "Ingen info"
+          "info": ""
         }
       },
       {
@@ -42194,7 +42194,7 @@ var feature2 = {
           "navn": "Duolbajávri–Ciccenjávri–Bievlajávri",
           "løype": "Løype 9",
           "status": "stengt",
-          "info": "Ingen info"
+          "info": ""
         }
       }
     ]
