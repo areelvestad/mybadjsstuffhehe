@@ -1,4 +1,4 @@
-var featyre3 = {
+var feature3 = {
     "type": "FeatureCollection",
     "features": [
       {
