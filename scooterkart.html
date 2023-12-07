@@ -1,0 +1,295 @@
+<!-- Nettsider jeg har brukt for å konvertere og redigere GPX/GeoJSON:
+
+https://geojson.io/ -- Rediger GeoJSON
+https://mygeodata.cloud/converter/gpx-to-json/ -- GPX til GeoJSON
+https://karteksport.miljodirektoratet.no/ -- Få tilsendt skuterløypene
+
+
+GeoJson data: navn | løype | status | info
+-->
+
+<head>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <!-- Leaflet Fullscreen -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.fullscreen/Control.FullScreen.css" />
+    <script src="https://unpkg.com/leaflet.fullscreen/Control.FullScreen.js"></script>
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+    <!-- Legger til de forskjellige skuterløypene -->
+    <script src="https://cdn.jsdelivr.net/gh/areelvestad/mybadjsstuffhehe@latest/nordreisa.js"></script> <!-- Nordreisa -->
+    <script src="https://cdn.jsdelivr.net/gh/areelvestad/mybadjsstuffhehe@latest/kåfjord.js"></script> <!-- Kåfjord -->
+
+    
+    
+</head>
+
+<style>
+
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+    * {
+    font-family: 'Roboto';
+} 
+
+.scooterkart {
+    width: 100%;
+    display: grid;
+    position: relative;
+}
+
+    .kart-header-title {
+        height: 2em;
+
+        display: flex;
+   
+        background-color: rgb(255, 255, 255);
+
+        font-size: 1.3em;
+        font-weight: bold;
+
+        color: rgb(0, 0, 0);
+
+        padding: .3em;
+        padding-left: 1em;
+        margin: 0;
+
+        align-items: center;
+
+        border-bottom: 2px solid rgb(38, 78, 138);
+    }
+
+    .kart-main {
+
+        width: 100%;
+        height: 500px;
+    }
+
+    .mapid {
+            height: 100%;
+            width: 100%;
+            position: relative;
+        }
+
+    .logo {
+        z-index: 800;
+        position: absolute;
+        bottom: .2em;
+        left: .2em;
+        width: 100px;
+        background: rgba(25, 53, 95, 0.76);
+        padding: 5px;
+        border-radius: 2px;
+        backdrop-filter: blur(3px);
+    }
+        .st0 { fill: #de3040; }
+        .st1 { fill-rule: evenodd; clip-rule: evenodd; fill: #ffffff; }
+        .st2 { fill: #ffffff; }
+
+        .leaflet-tooltip.my-labels {
+            background-color: transparent;
+            border: transparent;
+            box-shadow: none;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+    .span-container {
+        z-index: 600;
+        position: absolute;
+        bottom: 10px;
+        left: 5px;
+
+        display: flex;
+        flex-direction: column; 
+        gap: .2em;
+        padding-left: 5px;
+    }
+
+    .åpent, 
+    .delvis, 
+    .stengt {
+            border: 1px solid rgba(0, 0, 0, 0.144);
+            border-radius: 3px;
+            padding: .3em;
+            font-size: 1em;
+            font-weight: 500;
+            background-color: blanchedalmond;
+        }
+
+        .åpent {
+            background-color: rgba(96, 196, 96, 0.521);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+        .delvis {
+            background-color: rgba(231, 162, 35, 0.493);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+        .stengt {
+            background-color: rgba(226, 103, 103, 0.466);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+
+        #info-box {
+            position: absolute;
+            z-index: 999;
+
+            top: 12px;
+            left: 50px;
+            
+            padding: 0.3em;
+
+            text-shadow: 0px 0px 10px rgb(255, 255, 255);
+
+            background-color: rgba(0, 0, 0, 0);
+            max-width: 250px;
+            background-color: #ffffff8e;
+
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+
+            border-radius: 2px;
+
+            transition: opacity 0.2s ease-out;
+
+            font-size: 1.2em;
+        }
+    
+    .sist-oppdatert {
+        font-size: 0.9em;
+        padding: 0.5em;
+        background-color: #ffffff;
+        border-bottom-right-radius: 10px;
+        border-top: 2px solid rgb(38, 78, 138);
+        
+    }
+
+</style>
+
+</head>
+    <div class="scooterkart">
+
+        <div class="kart-header">
+            <div class="kart-header-title">Skuterløypene i Nord-Troms</div>
+            <div class="kart-main">
+
+                <div class="mapid" id="map" role="application">
+                    <div id="info-box">Trykk på løyper for mer info</div>
+                    <div class="span-container">
+                        <span class="åpent">Åpent</span>
+                        <span class="delvis">Delvis</span>
+                        <span class="stengt">Stengt</span>
+                    </div>
+                </div>
+                
+
+            </div>
+        </div>
+        <div class="sist-oppdatert"><i>Sist oppdatert: 7. desember 2023</i></div>
+    </div>
+
+    
+
+    <script>
+        var map = L.map('map', {
+            center: [69.743, 21.0],
+            zoom: 7,
+            fullscreenControl: true,
+            tapTolerance: 30,
+        });
+
+        L.tileLayer("https://opencache.statkart.no/gatekeeper/gk/gk.open_gmaps?layers=topo4graatone&zoom={z}&x={x}&y={y}", {
+            attribution: '<a href="http://www.kartverket.no/">Kartverket</a> | <a href="miljodirektoratet.no">Miljødirektoratet',
+            maxZoom: 19,
+        }).addTo(map);
+
+          
+    // GeoJSONwith colors
+        var styleFunction = function(feature) {
+        switch (feature.properties.status) {
+            case 'åpen': return {
+                color: "#38B42C", 
+                weight: 2,
+                lineJoin: 'miter',
+                lineCap: 'round',
+                smoothFactor: '2',
+                interactive: true,
+            };
+
+            case 'delvis åpen': return {
+                color: "#ffae00", 
+                weight: 2,
+                lineJoin: 'miter',
+                lineCap: 'round',
+                smoothFactor: '2',
+                interactive: true,
+            };
+
+            case 'stengt': return {
+                color: "#ff0000", 
+                weight: 2,
+                lineJoin: 'miter',
+                lineCap: 'round',
+                smoothFactor: '2',
+                interactive: true,
+            }; 
+        }};
+
+
+        var onEachFeature = function (feature, layer) {
+            layer.on({
+                click: function (e) {
+                    L.DomEvent.stopPropagation(e); // Stop the event from propagating to the map
+                    var info = feature.properties.info ? feature.properties.info : '';
+                    var infoBox = document.getElementById('info-box');
+                    
+                    infoBox.style.opacity = '0'; // initiate fading out
+
+                    setTimeout(function() { // wait for fade out completion then change info
+                        infoBox.innerHTML = '<b>'+ feature.properties.løype + '</b>: ' + feature.properties.navn + ' er <b>' + feature.properties.status + '</b>. ' + info;                
+                        infoBox.style.opacity = '1'; // bring the element back by fading in
+                    }, 100);
+                },
+                mouseover: function (e) {
+                    this.setStyle({
+                        opacity: 50,
+                        weight: 5,  // On mouse over, the color changes to blue.
+                    });
+                },
+                mouseout: function (e) {
+                    this.setStyle(styleFunction(feature));  // On mouse out, it reverts to its original style.
+                }
+            });
+        };
+
+    var geoJsonFeature1 = L.geoJSON(feature1, { style: styleFunction, onEachFeature: onEachFeature }).addTo(map);
+    var geoJsonFeature2 = L.geoJSON(feature2, { style: styleFunction, onEachFeature: onEachFeature }).addTo(map);
+
+    map.on('click', function(e) {
+    document.getElementById('info-box').innerHTML = "";
+    });
+
+    map.on('enterFullscreen', function(){
+    if(window.console) window.console.log('enterFullscreen');
+    var infoBox = document.getElementById('info-box');
+    infoBox.style.opacity = '1'; // Ensure infobox visibility during fullscreen
+});
+       
+
+        //Layers i den menyen
+        var overlayMaps = {
+            "Nordreisa": geoJsonFeature1,
+            "Kåfjord": geoJsonFeature2,
+            // Add other layers if any
+        };
+
+        /* L.control.layers(null, overlayMaps).addTo(map); */ /* Usikker på om man treng den her i det hele tatt */ 
+
+    </script>
