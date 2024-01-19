@@ -23,6 +23,9 @@ GeoJson data: navn | løype | status | info
     <!-- Legger til de forskjellige skuterløypene -->
     <script src="https://cdn.jsdelivr.net/gh/areelvestad/mybadjsstuffhehe@latest/nordreisa.js"></script> <!-- Nordreisa -->
     <script src="https://cdn.jsdelivr.net/gh/areelvestad/mybadjsstuffhehe@latest/kåfjord.js"></script> <!-- Kåfjord -->
+    <script src="https://cdn.jsdelivr.net/gh/areelvestad/mybadjsstuffhehe@latest/kvænangen.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/areelvestad/mybadjsstuffhehe@latest/skjervøy.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/areelvestad/mybadjsstuffhehe@latest/storfjord.js"></script>
 
     
     
@@ -32,16 +35,22 @@ GeoJson data: navn | løype | status | info
 
     @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 
-    * {
-    font-family: 'Roboto';
-} 
+
 
 .scooterkart {
     width: 100%;
     display: grid;
     position: relative;
+    font-family: 'Roboto';
 }
+    .scooterkart * {
+        font-family: 'Roboto';
 
+        -webkit-user-select: none;  /* Safari 3.1+  */
+        -moz-user-select: none;     /* Firefox 2+   */
+        -ms-user-select: none;      /* IE 10+       */
+        user-select: none;          /* Standard syntax */
+    }
     .kart-header-title {
         height: 2em;
 
@@ -64,7 +73,6 @@ GeoJson data: navn | løype | status | info
     }
 
     .kart-main {
-
         width: 100%;
         height: 500px;
     }
@@ -75,30 +83,7 @@ GeoJson data: navn | løype | status | info
             position: relative;
         }
 
-    .logo {
-        z-index: 800;
-        position: absolute;
-        bottom: .2em;
-        left: .2em;
-        width: 100px;
-        background: rgba(25, 53, 95, 0.76);
-        padding: 5px;
-        border-radius: 2px;
-        backdrop-filter: blur(3px);
-    }
-        .st0 { fill: #de3040; }
-        .st1 { fill-rule: evenodd; clip-rule: evenodd; fill: #ffffff; }
-        .st2 { fill: #ffffff; }
-
-        .leaflet-tooltip.my-labels {
-            background-color: transparent;
-            border: transparent;
-            box-shadow: none;
-            font-weight: bold;
-            font-size: 16px;
-        }
-
-    .span-container {
+    .span-container-status {
         z-index: 600;
         position: absolute;
         bottom: 10px;
@@ -182,7 +167,7 @@ GeoJson data: navn | løype | status | info
 
                 <div class="mapid" id="map" role="application">
                     <div id="info-box">Trykk på løyper for mer info</div>
-                    <div class="span-container">
+                    <div class="span-container-status">
                         <span class="åpent">Åpent</span>
                         <span class="delvis">Delvis</span>
                         <span class="stengt">Stengt</span>
@@ -199,7 +184,7 @@ GeoJson data: navn | løype | status | info
 
     <script>
         var map = L.map('map', {
-            center: [69.743, 21.0],
+            center: [69.743, 21.57],
             zoom: 7,
             fullscreenControl: true,
             tapTolerance: 30,
@@ -248,29 +233,37 @@ GeoJson data: navn | løype | status | info
                 click: function (e) {
                     L.DomEvent.stopPropagation(e); // Stop the event from propagating to the map
                     var info = feature.properties.info ? feature.properties.info : '';
+                    var navn = feature.properties.navn ? feature.properties.navn : '';
                     var infoBox = document.getElementById('info-box');
                     
                     infoBox.style.opacity = '0'; // initiate fading out
 
                     setTimeout(function() { // wait for fade out completion then change info
-                        infoBox.innerHTML = '<b>'+ feature.properties.løype + '</b>: ' + feature.properties.navn + ' er <b>' + feature.properties.status + '</b>. ' + info;                
+                        infoBox.innerHTML = '<b>'+ feature.properties.løype + '</b>: ' + navn + ' er <b>' + feature.properties.status + '</b>. ' + info;                
                         infoBox.style.opacity = '1'; // bring the element back by fading in
                     }, 100);
                 },
+
                 mouseover: function (e) {
                     this.setStyle({
                         opacity: 50,
-                        weight: 5,  // On mouse over, the color changes to blue.
+                        weight: 5,  
                     });
                 },
+
                 mouseout: function (e) {
                     this.setStyle(styleFunction(feature));  // On mouse out, it reverts to its original style.
                 }
             });
         };
 
-    var geoJsonFeature1 = L.geoJSON(feature1, { style: styleFunction, onEachFeature: onEachFeature }).addTo(map);
-    var geoJsonFeature2 = L.geoJSON(feature2, { style: styleFunction, onEachFeature: onEachFeature }).addTo(map);
+        
+
+    var geoJsonFeature1 = L.geoJSON(feature1, { style: styleFunction, onEachFeature: onEachFeature }).addTo(map); // <--Nordreisa
+    var geoJsonFeature2 = L.geoJSON(feature2, { style: styleFunction, onEachFeature: onEachFeature }).addTo(map); // <--Kåfjord
+    var geoJsonFeature3 = L.geoJSON(feature3, { style: styleFunction, onEachFeature: onEachFeature }).addTo(map); // <--Kvænangen
+    var geoJsonFeature4 = L.geoJSON(feature4, { style: styleFunction, onEachFeature: onEachFeature }).addTo(map); // <--Skjervøy
+    var geoJsonFeature5 = L.geoJSON(feature5, { style: styleFunction, onEachFeature: onEachFeature }).addTo(map); // <--Storfjord
 
     map.on('click', function(e) {
     document.getElementById('info-box').innerHTML = "";
@@ -287,6 +280,9 @@ GeoJson data: navn | løype | status | info
         var overlayMaps = {
             "Nordreisa": geoJsonFeature1,
             "Kåfjord": geoJsonFeature2,
+            "Kvænangen": geoJsonFeature3,
+            "Skjervøy": geoJsonFeature4,
+            "Storfjord": geoJsonFeature5,
             // Add other layers if any
         };
 
