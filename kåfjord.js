@@ -26744,7 +26744,7 @@ var feature2 = {
       "properties": {
         "navn": "Birtavarre-Gussagurra",
         "løype": "Løype 4a",
-        "status": "Åpen",
+        "status": "åpen",
         "info": ""
       },
       "id": 3
