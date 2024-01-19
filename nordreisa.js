@@ -530,7 +530,7 @@ var feature1 = {
       "properties": {
         "navn": "Oksfjord - Gearpmeskrysset",
         "løype": "Løype 4",
-        "status": "stengt"
+        "status": "åpen"
       }
     },
     {
