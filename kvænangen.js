@@ -6,7 +6,7 @@ var feature3 = {
       "properties": {
         "name": "Alteideløypa",
         "løype": "Løype 11",
-        "status": "stengt",
+        "status": "åpen",
         "info": ""
       },
       "geometry": {
@@ -3501,8 +3501,8 @@ var feature3 = {
       "properties": {
         "name": "Burfjorddalsløypa",
         "løype": "Løype 2",
-        "status": "stengt",
-        "info": ""
+        "status": "delvis åpen",
+        "info": "Fra løypestart til skavlen."
       },
       "geometry": {
         "type": "LineString",
@@ -6880,7 +6880,7 @@ var feature3 = {
       "properties": {
         "name": "Burfjordløypa",
         "løype": "Løype 1",
-        "status": "stengt",
+        "status": "åpen",
         "info": ""
       },
       "geometry": {
@@ -8546,7 +8546,7 @@ var feature3 = {
       "properties": {
         "name": "Kjækanløypa",
         "løype": "Løype 7",
-        "status": "stengt"
+        "status": "åpen"
       },
       "geometry": {
         "type": "LineString",
@@ -9888,7 +9888,7 @@ var feature3 = {
       "properties": {
         "name": "Kjækanløypa 2",
         "løype": "Løype 7",
-        "status": "stengt"
+        "status": "åpen"
       },
       "geometry": {
         "type": "LineString",
@@ -10169,7 +10169,7 @@ var feature3 = {
       "properties": {
         "name": "Kjækanløypa 3",
         "løype": "Løype 7",
-        "status": "stengt"
+        "status": "åpen"
       },
       "geometry": {
         "type": "LineString",
@@ -15270,7 +15270,7 @@ var feature3 = {
       "properties": {
         "name": "Navit Sappisvann",
         "løype": "Løype 14",
-        "status": "stengt"
+        "status": "åpen"
       },
       "geometry": {
         "type": "LineString",
@@ -28874,7 +28874,8 @@ var feature3 = {
       "properties": {
         "name": "Valan Kai",
         "løype": "Løype 21",
-        "status": "stengt"
+        "status": "delvis åpen",
+        "info": "Indre Valan til Langvannet."
       },
       "geometry": {
         "type": "LineString",
